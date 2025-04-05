@@ -1,0 +1,53 @@
+{
+  "manifest_version": 3,
+  "name": "CloseAssist",
+  "version": "1.0",
+  "description": "Records audio from an active Chrome tab and provides live transcription.",
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+      
+    }
+  },
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabCapture",
+    "offscreen",
+    "scripting",
+    "contextMenus",
+    "sidePanel"
+  ],
+  "host_permissions": [
+    "https://*/*",
+    "http://*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"],
+      "all_frames": false
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["permission-frame.html", "permission-popup.html"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "dist/sidepanel/index.html"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+} 

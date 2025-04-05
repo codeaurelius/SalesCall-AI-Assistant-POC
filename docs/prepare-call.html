@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sales Call Setup</title>
+<style>
+  body { font-family: sans-serif; margin: 0; padding: 0; background-color: #f4f7fc; color: #333; }
+  .container { display: flex; flex-direction: column; height: 500px; /* Default canvas height */ }
+  .header { background-color: #4a90e2; color: white; padding: 10px 20px; font-size: 1.2em; }
+  .setup-content { padding: 25px; flex-grow: 1; display: flex; justify-content: center; align-items: flex-start; }
+  .setup-form { background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 20px 30px; width: 100%; max-width: 600px; }
+  .form-title { font-size: 1.3em; color: #333; margin-bottom: 20px; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 10px;}
+  .form-group { margin-bottom: 15px; }
+  label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; font-size: 0.9em;}
+  input[type="text"], input[type="number"], textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    font-size: 0.95em;
+  }
+   textarea {
+    resize: vertical; /* Allow vertical resizing */
+    min-height: 80px;
+  }
+  .participant-section { border: 1px solid #eee; padding: 15px; border-radius: 5px; margin-top: 10px; background-color: #fafafa;}
+  .participant-section h4 { margin-top: 0; margin-bottom: 10px; font-size: 1em; color: #4a90e2;}
+  .start-button-container { text-align: center; margin-top: 25px; }
+  button.start {
+    padding: 12px 30px;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.2s;
+  }
+  button.start:hover {
+    background-color: #45a049;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <span>Sales Call Analyzer - Setup</span>
+    </div>
+    <div class="setup-content">
+      <div class="setup-form">
+        <div class="form-title">Prepare Your Call</div>
+
+        <div class="form-group">
+          <label for="meeting-topic">Meeting Topic / Goal:</label>
+          <textarea id="meeting-topic" name="meeting-topic" placeholder="e.g., Discuss Q2 workflow improvements, Demo feature X..."></textarea>
+        </div>
+
+        <div class="form-group participant-section">
+           <h4>Participants</h4>
+           <label for="host-name">Host Name (You):</label>
+           <input type="text" id="host-name" name="host-name" value="Your Name" placeholder="Enter your name">
+
+           <label for="guest-name" style="margin-top:10px;">Guest Name:</label>
+           <input type="text" id="guest-name" name="guest-name" placeholder="Enter guest's full name">
+
+           <label for="guest-company" style="margin-top:10px;">Guest Company:</label>
+           <input type="text" id="guest-company" name="guest-company" placeholder="Enter guest's company name">
+
+           <label for="guest-role" style="margin-top:10px;">Guest Role:</label>
+           <input type="text" id="guest-role" name="guest-role" placeholder="e.g., Project Manager, Head of Sales">
+        </div>
+
+        <!-- Add more fields as needed - e.g., expected duration, number of participants if more than 2 -->
+
+        <div class="start-button-container">
+          <button class="start">Start Recording & Transcription</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>

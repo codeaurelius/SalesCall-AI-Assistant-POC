@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>CloseAssist - Permission Request</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      font-size: 24px;
+    }
+    .status {
+      margin: 20px 0;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    .status.success {
+      background-color: #e6f7e6;
+      color: #2e7d32;
+    }
+    .status.error {
+      background-color: #fdedeb;
+      color: #c62828;
+    }
+    .status.pending {
+      background-color: #e3f2fd;
+      color: #1565c0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Requesting Microphone Permission</h1>
+    <div id="status" class="status pending">Requesting permission...</div>
+  </div>
+
+  <script>
+    // Log to console for debugging
+    console.log('Permission frame loaded');
+    
+    const statusElement = document.getElementById('status');
+    
+    // Function to request microphone permission
+    async function requestMicrophonePermission() {
+      try {
+        console.log('Permission frame requesting microphone access');
+        statusElement.textContent = 'Requesting microphone permission...';
+        statusElement.className = 'status pending';
+        
+        // Request microphone access with echoCancellation enabled
+        console.log('Calling getUserMedia with constraints');
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true
+          }
+        });
+        
+        console.log('getUserMedia succeeded, stopping tracks');
+        // Success - stop all tracks and report back
+        stream.getTracks().forEach(track => {
+          console.log('Stopping track:', track.kind, track.label);
+          track.stop();
+        });
+        
+        console.log('Permission frame: Permission granted');
+        statusElement.textContent = 'Microphone permission granted successfully!';
+        statusElement.className = 'status success';
+        
+        // Send message to parent window
+        console.log('Sending success message to parent window');
+        window.parent.postMessage({ success: true }, '*');
+        
+      } catch (error) {
+        console.error('Permission frame error:', error);
+        
+        // Create a detailed error response
+        let errorMsg = '';
+        let isDismissed = false;
+        let isDenied = false;
+        
+        if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
+          console.log('Permission error type:', error.name);
+          if (error.message && (
+              error.message.toLowerCase().includes('dismiss') || 
+              error.message.includes('closed'))) {
+            errorMsg = 'Microphone permission request was dismissed by user';
+            isDismissed = true;
+          } else {
+            errorMsg = 'Microphone permission denied by user';
+            isDenied = true;
+          }
+        } else if (error.name === 'NotFoundError') {
+          errorMsg = 'No microphone found. Please connect a microphone and try again.';
+        } else if (error.name === 'AbortError') {
+          errorMsg = 'Microphone permission request was dismissed by user';
+          isDismissed = true;
+        } else {
+          errorMsg = `Error accessing microphone: ${error.message}`;
+        }
+        
+        console.log('Sending error message to parent:', {
+          error: errorMsg,
+          isDismissed,
+          isDenied,
+          errorName: error.name
+        });
+        
+        statusElement.textContent = errorMsg;
+        statusElement.className = 'status error';
+        
+        // Send error message to parent window
+        window.parent.postMessage({ 
+          success: false, 
+          error: errorMsg,
+          permissionDenied: isDenied,
+          permissionDismissed: isDismissed,
+          errorName: error.name
+        }, '*');
+      }
+    }
+    
+    // Request permission when page loads
+    // Delay slightly to ensure everything is loaded
+    console.log('Setting up delayed permission request');
+    setTimeout(() => {
+      console.log('Starting permission request');
+      requestMicrophonePermission();
+    }, 500);
+  </script>
+</body>
+</html> 

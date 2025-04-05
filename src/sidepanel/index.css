@@ -1,0 +1,1750 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  margin: 0;
+  padding: 16px;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #3367d6;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.icon-button {
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.controls-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.button-container {
+  position: relative;
+}
+
+.mic-permission-button {
+  display: none;
+}
+
+.mic-permission-button.show {
+  display: block;
+}
+
+.record-button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+}
+
+.record-buttons-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 0;
+  margin: 0;
+}
+
+.record-button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.record-button svg {
+  fill: currentColor;
+}
+
+.record-button:hover:not(:disabled) {
+  background-color: #3367d6;
+}
+
+.record-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.record-button.start-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.record-button.start-button:hover:not(:disabled) {
+  background-color: #45a049;
+}
+
+.record-button.start-button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+.record-button.stop-button {
+  background-color: #ea4335;
+}
+
+.record-button.stop-active {
+  background-color: #f44336 !important;
+  color: white;
+}
+
+.record-button.stop-active:hover {
+  background-color: #da190b !important;
+}
+
+.record-button.stop-pending {
+  background-color: #ff9800 !important;
+  color: white;
+  animation: pulse 1.5s infinite;
+}
+
+.record-button.stop-pending:hover {
+  background-color: #e65100 !important;
+}
+
+.panel-section {
+  margin-bottom: 16px;
+}
+
+.controls-section {
+  margin-bottom: 16px;
+}
+
+.transcription-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  background-color: #ffffff;
+}
+
+.transcription-header {
+  padding: 12px 16px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.transcription-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.transcription-status {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.status-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.status-inactive {
+  background-color: #9e9e9e;
+}
+
+.status-connecting {
+  background-color: #ffc107;
+  animation: pulse 1.5s infinite;
+}
+
+.status-connected {
+  background-color: #4caf50;
+}
+
+.status-disconnected {
+  background-color: #9e9e9e;
+}
+
+.status-error {
+  background-color: #f44336;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.transcription-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background-color: #ffffff;
+}
+
+.segment {
+  display: flex;
+  flex-direction: column;
+  max-width: 90%;
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background-color: #f1f3f5;
+  margin-bottom: 0;
+}
+
+.segment.speaker-0 {
+  align-self: flex-end;
+  background-color: #e9ecef;
+}
+
+.segment.speaker-1 {
+  align-self: flex-start;
+  background-color: #dbe4ff;
+}
+
+.segment.new-group {
+  margin-top: 12px;
+}
+
+.segment .badge {
+  font-size: 0.7em;
+  font-weight: bold;
+  border-radius: 50%;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  margin-bottom: 4px;
+  box-sizing: border-box;
+}
+
+.speaker-badge-0 { background-color: #b3e5fc !important; color: #01579b !important; }
+.speaker-badge-1 { background-color: #ffecb3 !important; color: #ff6f00 !important; }
+.speaker-badge-2 { background-color: #c8e6c9 !important; color: #1b5e20 !important; }
+.speaker-badge-3 { background-color: #d1c4e9 !important; color: #311b92 !important; }
+
+.segment .transcript-text {
+  font-size: 0.95em;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: #212529;
+}
+
+.segment.interim .transcript-text {
+  font-style: italic;
+  color: #6c757d;
+}
+
+.mic-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mic-permission-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+.mic-permission-button:hover {
+  background-color: #388e3c;
+}
+
+.mic-permission-button.permission-granted {
+  background-color: #81c784;
+  cursor: default;
+}
+
+.record-indicator {
+  display: flex;
+  align-items: center;
+  margin-right: 12px;
+  gap: 8px;
+}
+
+.record-dot {
+  width: 10px;
+  height: 10px;
+  background-color: #f44336;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.recording-time {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.timer-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  font-family: monospace;
+  margin-left: 0;
+  padding-left: 10px;
+}
+
+.record-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.record-button:hover {
+  background-color: #3367d6;
+}
+
+.record-icon {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.stop-button {
+  background-color: #f44336;
+}
+
+.stop-button:hover {
+  background-color: #d32f2f;
+}
+
+.stop-icon {
+  width: 12px;
+  height: 12px;
+  background-color: white;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  background-color: #e0e0e0;
+  color: #333;
+  font-weight: 500;
+  font-size: 14px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.speaker-0 { background-color: #bbdefb; color: #1565c0; }
+.speaker-1 { background-color: #c8e6c9; color: #2e7d32; }
+.speaker-2 { background-color: #ffecb3; color: #ff8f00; }
+.speaker-3 { background-color: #f8bbd0; color: #c2185b; }
+.speaker-4 { background-color: #e1bee7; color: #7b1fa2; }
+.speaker-5 { background-color: #b2ebf2; color: #00838f; }
+.speaker-6 { background-color: #ffccbc; color: #d84315; }
+.speaker-7 { background-color: #d7ccc8; color: #4e342e; }
+
+.notification, .warning {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  border-radius: 4px;
+  color: white;
+  font-weight: 500;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 1000;
+  animation: slideIn 0.3s, fadeOut 0.5s 2.5s forwards;
+  max-width: 80%;
+}
+
+.notification {
+  background-color: #4caf50;
+}
+
+.warning {
+  background-color: #ff9800;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* App Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: #4a90e2; /* Deep Blue */
+  border-bottom: 1px solid #3a7bd5; /* Slightly darker blue border */
+  flex-shrink: 0; 
+  color: white; /* Default text color */
+}
+
+.app-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between back button and title if both shown */
+}
+
+.app-header h1 {
+  font-size: 1.1em;
+  margin: 0;
+  font-weight: 600;
+  color: white; /* Ensure title is white */
+}
+
+/* Settings Icon Button */
+.settings-icon-button {
+  background: none;
+  border: none;
+  color: #ffffff; /* White icon */
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.settings-icon-button:hover {
+  background-color: rgba(255, 255, 255, 0.15); /* Lighter overlay on hover */
+  color: #ffffff;
+}
+
+.settings-icon-button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.settings-icon-button.disabled:hover {
+  background-color: transparent;
+  color: #ffffff; /* Keep white when disabled */
+}
+
+.settings-icon-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Settings Panel */
+.settings-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.settings-panel {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.settings-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #777;
+  cursor: pointer;
+  padding: 0 5px;
+}
+
+.close-button:hover {
+  color: #333;
+}
+
+.settings-content {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.settings-group {
+  margin-bottom: 20px;
+}
+
+.settings-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.settings-input,
+.settings-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.settings-input:focus,
+.settings-select:focus {
+  border-color: #4d90fe;
+  outline: none;
+}
+
+.settings-description {
+  font-size: 12px;
+  color: #777;
+  margin-top: 5px;
+}
+
+.settings-description a {
+  color: #4d90fe;
+  text-decoration: none;
+}
+
+.settings-description a:hover {
+  text-decoration: underline;
+}
+
+.settings-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.settings-button {
+  background-color: #4d90fe;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.settings-button:hover {
+  background-color: #3a7be0;
+}
+
+.settings-button:disabled {
+  background-color: #b8d1fd;
+  cursor: not-allowed;
+}
+
+.settings-message {
+  padding: 12px;
+  border-radius: 4px;
+  margin: 15px 0;
+}
+
+.settings-message.success {
+  background-color: #e6f7e6;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+
+.settings-message.error {
+  background-color: #fdeded;
+  color: #c62828;
+  border: 1px solid #f5c6c6;
+}
+
+/* API Key Warning */
+.api-key-warning {
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  color: #856404;
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.api-key-warning p {
+  margin: 0;
+  text-align: center;
+  font-weight: 500;
+}
+
+.api-key-warning button {
+  background-color: #ffc107;
+  color: #212529;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.api-key-warning button:hover {
+  background-color: #e0a800;
+}
+
+/* Recording indicator in the controls section */
+.controls-section .record-indicator {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  gap: 8px;
+}
+
+.controls-section .record-dot {
+  width: 12px;
+  height: 12px;
+  background-color: #f44336;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+.controls-section .recording-time {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.settings-checkbox-group {
+  margin-bottom: 10px;
+}
+
+.settings-checkbox-group.inline-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.settings-checkbox-group.inline-group label {
+  margin-left: 8px;
+  margin-right: auto;
+  margin-bottom: 0;
+}
+
+.settings-checkbox-group.inline-group input[type="checkbox"] {
+  margin: 0;
+}
+
+/* Empty state styling */
+.empty-state {
+  color: #757575;
+  font-style: italic;
+  padding: 30px 20px; /* Increased padding */
+  text-align: center;
+  flex-grow: 1; /* Allow it to take up space */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Specific empty states if needed, otherwise just use .empty-state */
+.transcription-empty-state {
+  /* Inherits from .empty-state */
+}
+
+.insights-empty {
+  /* Inherits from .empty-state */
+}
+
+.insights-error {
+  color: #d32f2f;
+  background-color: #ffebee;
+  padding: 10px 15px;
+  border-radius: 4px;
+  border: 1px solid #ef9a9a;
+  margin: 15px;
+  overflow-wrap: break-word;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex; /* Ensure root takes full height */
+  flex-direction: column;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
+  overflow: hidden; /* Prevent this container from scrolling */
+  background-color: #f8f9fa; /* Light background */
+}
+
+.main-content {
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  min-height: 0;
+}
+
+/* Container for split view */
+/* .main-content-split {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  overflow: hidden;
+  width: 100%;
+} */
+
+/* Left side panel */
+/* .main-content-left {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 65%;
+  flex-grow: 1;
+  overflow: hidden;
+  padding: 15px;
+  border-right: 1px solid #dee2e6;
+  min-width: 0;
+}
+
+/* Right side panel (Insights) */
+.main-content-right {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 35%;
+  overflow-y: auto;
+  padding: 15px;
+  min-width: 0;
+}
+
+/* Insights Panel Styling */
+.insights-panel {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #ffffff;
+}
+
+.insights-header {
+  padding: 12px 16px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.insights-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.analyze-button {
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.analyze-button:disabled {
+  background-color: #bdbdbd;
+  cursor: not-allowed;
+}
+
+.analyze-button:hover:not(:disabled) {
+  background-color: #1a73e8;
+}
+
+/* Subtle loading indicator using CSS */
+.loading-indicator {
+  height: 3px;
+  background: linear-gradient(90deg, #ccc, #aaa, #ccc);
+  background-size: 200% 100%;
+  animation: loadingShimmer 1.5s linear infinite;
+  margin-top: -1px; /* Place just below the header border */
+}
+
+@keyframes loadingShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.insights-content {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 15px;
+  background-color: #ffffff;
+  /* display: flex; flex-direction: column; gap: 10px; Applied via style prop */
+}
+
+.insight-category {
+  margin-bottom: 15px;
+}
+
+.insight-category h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 4px;
+}
+
+.insight-category ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.insight-item {
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  border: 1px solid #e8e8e8; /* Slightly lighter border */
+  /* Remove transition for background color to make highlight persistent */
+  /* transition: background-color 0.5s ease-out, border-color 0.3s ease; */
+  transition: border-color 0.3s ease; /* Keep border transition if needed */
+  line-height: 1.4;
+  /* Base background removed */
+}
+
+/* === OLD Insight Item Colors (Lighter Tones) === */
+.insight-item.category-keywords {
+  background-color: #f4f8ff; /* Very Light Blue */
+  border-color: #e8f0fe; 
+}
+.insight-item.category-objections {
+  background-color: #fff6f5; /* Very Light Red/Pink */
+  border-color: #fce8e6;
+}
+.insight-item.category-pain_points {
+  background-color: #fffcf5; /* Very Light Yellow */
+  border-color: #fff8e1;
+}
+.insight-item.category-action_items {
+  background-color: #f5fbf7; /* Very Light Green */
+  border-color: #e6f4ea;
+}
+
+/* === NEW Insight Item Colors (Standard Tones) === */
+/* Applied when .new-insight class is present */
+.insight-item.category-keywords.new-insight {
+  background-color: #e8f0fe; /* Standard Light Blue */
+  border-color: #d2e3fc; /* Slightly darker border for new */
+}
+.insight-item.category-objections.new-insight {
+  background-color: #fce8e6; /* Standard Light Red/Pink */
+  border-color: #f8d7da; /* Slightly darker border for new */
+}
+.insight-item.category-pain_points.new-insight {
+  background-color: #fff8e1; /* Standard Light Yellow */
+  border-color: #ffecb3; /* Slightly darker border for new */
+}
+.insight-item.category-action_items.new-insight {
+  background-color: #e6f4ea; /* Standard Light Green */
+  border-color: #c8e6c9; /* Slightly darker border for new */
+}
+
+/* === Keyword Cloud Styles === */
+.insight-category.category-keywords-cloud ul { 
+  /* Override list display if needed, though container below is primary */
+}
+
+.keyword-cloud-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow tags to wrap */
+  gap: 6px 8px; /* Vertical and horizontal gap */
+  padding-top: 5px; /* Space below header */
+}
+
+.keyword-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 15px; /* More rounded for tag feel */
+  font-size: 12px; /* Slightly smaller */
+  font-weight: 500;
+  background-color: #f4f8ff; /* Default light blue for keywords */
+  border: 1px solid #e8f0fe;
+  color: #174ea6; /* Darker blue text */
+  transition: background-color 0.3s ease, border-color 0.3s ease; /* Keep transition */
+}
+
+/* Size variations */
+.keyword-tag.tag-large { font-size: 14px; padding: 5px 12px; }
+.keyword-tag.tag-medium { font-size: 13px; padding: 4px 10px; }
+.keyword-tag.tag-small { font-size: 11px; padding: 3px 8px; }
+
+/* Style for new keyword tags */
+.keyword-tag.new-insight {
+  background-color: #e8f0fe; /* Standard light blue */
+  border-color: #d2e3fc;
+  color: #174ea6;
+  /* Add optional visual cue like slightly bolder text? */
+  /* font-weight: 600; */
+}
+
+/* Adjust main-content padding if needed due to split */
+.app-container > .main-content-split {
+}
+
+/* Adjust TranscriptionView layout */
+.transcription-section {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 0;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  margin-top: 15px;
+}
+
+.transcription-header {
+  padding: 10px 15px;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.transcription-header h3 {
+  margin: 0;
+  font-size: 0.95em;
+  font-weight: 600;
+}
+
+.transcription-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+/* Styles for the split view within LiveRecording */
+.live-recording-split {
+  display: flex;
+  flex-grow: 1; 
+  gap: 16px; 
+  overflow: hidden; 
+  padding: 15px; 
+  box-sizing: border-box;
+  align-items: stretch; /* Make children stretch to equal height */
+}
+
+/* New Container for Live Recording View */
+.live-recording-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Try to fill available height */
+  flex-grow: 1;
+  overflow: hidden; /* Prevent main container overflow */
+}
+
+/* Header for Live Call Info & Controls */
+.live-call-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px; /* Match app header padding */
+  background-color: #e9edf2; /* Light grey background */
+  border-bottom: 1px solid #d1d9e6; 
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.call-participant-info span {
+  font-size: 0.95em;
+  color: #333;
+}
+
+.call-participant-info strong {
+  font-weight: 600;
+}
+
+/* Adjust controls positioning within the header */
+.live-call-header .controls-header {
+  margin-bottom: 0; /* Remove margin when inside live header */
+}
+
+/* Timer display within live header */
+.live-call-header .timer-display.live-timer-display {
+  color: #333; /* Darker text color */
+  font-size: 0.95em;
+  font-weight: 500;
+  margin: 0 10px; /* Add some margin */
+}
+
+.live-call-header .timer-display.live-timer-display .record-dot {
+  background-color: #e94b3c; /* Red dot */
+}
+
+.live-recording-left,
+.live-recording-right {
+  display: flex; /* Enable flex properties for children */
+  flex-direction: column;
+  min-width: 0; 
+  overflow: hidden; 
+}
+
+.live-recording-left {
+  flex-basis: 60%; 
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.live-recording-right {
+  flex-basis: 40%; 
+}
+
+/* Ensure both panels have identical container styling */
+.transcription-section,
+.insights-panel {
+  flex-grow: 1; /* Allow panel to grow within its container */
+  display: flex; /* Ensure flex for internal structure */
+  flex-direction: column;
+  border: 1px solid #e0e0e0; /* Consistent border */
+  border-radius: 8px; /* Consistent radius */
+  overflow: hidden; /* Consistent overflow */
+  background-color: #ffffff; /* Consistent background */
+}
+
+.transcription-header,
+.insights-header {
+  padding: 12px 16px;
+  background-color: #f5f5f5; 
+  border-bottom: 1px solid #e0e0e0; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0; 
+}
+
+.transcription-header h3,
+.insights-header h3 {
+  margin: 0;
+  font-size: 16px; /* Consistent font size */
+  font-weight: 500; /* Consistent font weight */
+}
+
+/* Ensure empty states fill the container */
+.transcription-container,
+.insights-content {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 15px; 
+  background-color: #ffffff; 
+  display: flex; /* Needed for empty state alignment */
+  flex-direction: column; /* Needed for empty state alignment */
+}
+
+.empty-state {
+  color: #757575;
+  font-style: italic;
+  padding: 30px 20px; 
+  text-align: center;
+  flex-grow: 1; /* Allow empty state to fill available space */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Styles for the Recordings View */
+.recordings-view {
+  padding: 15px;
+  box-sizing: border-box;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background-color: #f4f7fc;
+}
+
+/* New header style for Recordings view */
+.recordings-view .recordings-header {
+  display: flex;
+  justify-content: space-between; /* Pushes title and button apart */
+  align-items: center;
+  margin-bottom: 15px;
+  flex-shrink: 0;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.recordings-view .page-title {
+  font-size: 1.2em;
+  color: #333;
+  margin: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* Loading state in the recordings view */
+.recordings-view .loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  color: #757575;
+  font-style: italic;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  margin-top: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+/* Enhanced empty state in the recordings view */
+.recordings-view .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  margin-top: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.recordings-view .empty-state p {
+  color: #666;
+  margin-bottom: 15px;
+  font-size: 1.05em;
+}
+
+.recordings-view .start-new-call-button {
+  margin: 0;
+  font-size: 0.9em;
+  padding: 8px 12px;
+  background-color: #4285f4; /* Primary Blue */
+  color: white; /* Ensure text is white */
+}
+
+.recordings-view .start-new-call-button:hover {
+  background-color: #3367d6; /* Darker blue on hover */
+}
+
+.recordings-view .call-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  /* Removed flex-grow and overflow from here, handled by parent */
+}
+
+.recordings-view .call-card {
+  background-color: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.recordings-view .call-card:hover {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.recordings-view .call-info {
+  flex-grow: 1;
+  margin-right: 20px;
+  min-width: 0; /* Prevent flex overflow */
+}
+
+.recordings-view .call-info .guest-name {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #4a90e2; /* Match history.html */
+  margin: 0 0 3px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recordings-view .call-info .company-topic {
+  font-size: 0.9em;
+  color: #555;
+  margin: 0 0 5px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recordings-view .call-info .call-date {
+  font-size: 0.85em;
+  color: #777;
+  margin: 0;
+}
+
+.recordings-view .call-actions {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.recordings-view .call-actions .duration {
+  display: block;
+  font-size: 0.85em;
+  color: #777;
+  margin-bottom: 5px;
+}
+
+.recordings-view .view-recap-button {
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+  padding: 7px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  text-decoration: none;
+  display: inline-block;
+  margin: 0; /* Reset margin */
+}
+
+.recordings-view .view-recap-button:hover {
+  background-color: #4cae4c;
+}
+
+/* Tooltip styles */
+.tooltip {
+  /* Add styles here later if needed */
+}
+
+/* Back Button Style */
+.back-button {
+  background: none;
+  border: none;
+  color: #ffffff; /* White */
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  margin: 0;
+  font-size: 0.9em;
+  font-weight: 500;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+}
+
+.back-button:hover {
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.15); /* Lighter overlay on hover */
+}
+
+.back-button svg {
+  margin-bottom: 0;
+}
+
+.back-button.disabled,
+.back-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Styles for Prepare Call View */
+.prepare-call-view {
+  padding: 25px;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: #f4f7fc; /* Match */
+  overflow-y: auto; /* Allow scrolling if form is long */
+}
+
+.prepare-call-view .setup-form {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 20px 30px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.prepare-call-view .form-title {
+  font-size: 1.3em;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.prepare-call-view .form-group {
+  margin-bottom: 15px;
+}
+
+.prepare-call-view label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+  font-size: 0.9em;
+}
+
+.prepare-call-view input[type="text"],
+.prepare-call-view textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 0.95em;
+}
+
+.prepare-call-view textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.prepare-call-view .participant-section {
+  border: 1px solid #eee;
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 10px;
+  background-color: #fafafa;
+}
+
+.prepare-call-view .participant-section h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1em;
+  color: #4a90e2;
+}
+
+.prepare-call-view .start-button-container {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.prepare-call-view button.start {
+  padding: 12px 30px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1em;
+  transition: background-color 0.2s;
+  margin: 0; /* Reset margin */
+}
+
+.prepare-call-view button.start:hover {
+  background-color: #45a049;
+}
+
+/* Download actions container */
+.download-actions {
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  background-color: #f7f9fc;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.download-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.download-button:hover {
+  background-color: #3367d6;
+}
+
+.download-button svg {
+  stroke: currentColor;
+}
+
+/* Error state styling */
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background-color: #fff3f3;
+  border-radius: 8px;
+  margin: 20px;
+  text-align: center;
+}
+
+.error-state h3 {
+  color: #e53935;
+  margin-bottom: 15px;
+}
+
+.error-state p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* RecapView styles */
+.recap-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* New simplified header style */
+.recap-header-simplified {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 15px;
+}
+
+.recap-header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.recap-header-simplified h2 {
+  margin: 0;
+  font-size: 1.2em;
+  font-weight: 600;
+  color: #333;
+  text-align: left;
+}
+
+.recap-header-simplified .recap-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  font-size: 0.85em;
+  margin-top: 5px;
+  color: #555;
+  justify-content: flex-start;
+}
+
+.recap-header-simplified .recap-participants {
+  display: inline-flex;
+  align-items: center;
+}
+
+.recap-header-simplified .recap-participants strong {
+  font-weight: 600;
+  color: #444;
+}
+
+.recap-header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: 20px;
+}
+
+/* Update download button for simplified header */
+.recap-header-simplified .download-button {
+  /* Removing specific styles that conflict with the global download button */
+}
+
+.recap-header-simplified .download-button:hover {
+  /* Removing specific styles that conflict with the global download button */
+}
+
+.recap-header-left,
+.recap-header-right {
+  flex: 0 0 auto;
+  min-width: 100px;
+}
+
+.recap-header-center {
+  flex: 1;
+  text-align: center;
+  padding: 0 15px;
+}
+
+.recap-header-center h2 {
+  margin: 0;
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+.recap-meta {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  font-size: 0.8em;
+  margin-top: 5px;
+}
+
+.recap-header .download-button {
+  /* Removing specific styles that conflict with the global download button */
+}
+
+.recap-header .download-button:hover {
+  /* Removing specific styles that conflict with the global download button */
+}
+
+.audio-player-container {
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-top: 1px solid #e0e0e0;
+}
+
+.audio-player-container h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1em;
+  color: #333;
+}
+
+.audio-player {
+  width: 100%;
+  height: 36px;
+}
+
+/* Recordings Component Styles */
+.recordings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.recordings-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.secondary-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.secondary-button:hover {
+  background-color: #e8e8e8;
+}
+
+.delete-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.delete-button:hover {
+  background-color: #fee2e2;
+}
+
+/* Delete confirmation dialog */
+.delete-confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.delete-confirm-dialog {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.delete-confirm-dialog h3 {
+  color: #b91c1c;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.delete-confirm-dialog p {
+  margin-bottom: 20px;
+  color: #4b5563;
+}
+
+.delete-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cancel-button {
+  background-color: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.confirm-delete-button {
+  background-color: #b91c1c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.confirm-delete-button:hover {
+  background-color: #991b1b;
+}
+
+/* Global download button styles */
+.download-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 0.9em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.download-button:hover {
+  background-color: #3367d6;
+}
+
+.download-button svg {
+  width: 18px;
+  height: 18px;
+}

@@ -1,0 +1,42 @@
+{
+  "name": "chrome-tab-audio",
+  "version": "1.0.0",
+  "description": "A Chrome extension for recording audio from browser tabs with optional microphone input. Perfect for capturing online meetings, webinars, tutorials, or any browser-based audio content.",
+  "main": "background.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "rollup -c rollup.config.mjs && vite build",
+    "preview": "vite preview",
+    "watch:background": "rollup -c rollup.config.mjs --watch",
+    "watch:sidepanel": "vite build --watch",
+    "watch": "concurrently \"pnpm:watch:*\""
+  },
+  "keywords": [
+    "chrome-extension",
+    "audio-recorder",
+    "tab-capture",
+    "web-audio"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@types/chrome": "^0.0.260",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^9.1.2",
+    "rollup": "^4.38.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.0"
+  }
+}
