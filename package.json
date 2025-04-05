@@ -7,9 +7,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "dev": "vite",
     "build": "rollup -c rollup.config.mjs && vite build",
-    "preview": "vite preview",
     "watch:background": "rollup -c rollup.config.mjs --watch",
     "watch:sidepanel": "vite build --watch",
     "watch": "concurrently \"pnpm:watch:*\""

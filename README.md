@@ -8,6 +8,9 @@ CloseAssist is a Chrome extension POC designed to assist sales professionals dur
 
 **This tool was developed solely for demonstration and conceptual validation.**
 
+![Screenshot 1](docs/screenshot1.png)
+![Screenshot 2](docs/screenshot2.png)
+
 ## Features (POC Implementation)
 
 *   **Real-time Transcription**: Captures audio from the current browser tab (e.g., a web-based meeting platform) and optionally the user's microphone, transcribing it in real-time using Deepgram.
@@ -41,7 +44,11 @@ You must obtain these keys from Deepgram and Google AI Studio respectively and e
 
 **1. Build the Extension (Required for Loading):**
 
-   *   You first need to compile the extension code. Open your terminal in the project's root directory and run the build command (this might be `npm run build`, `yarn build`, or similar, depending on the project setup):
+   *   Before compiling the extension code, ensure all dependencies are installed by running `npm install` in the project's root directory:
+       ```bash
+       npm install
+       ```
+   *   After installing dependencies, you can compile the extension code. Open your terminal in the project's root directory and run the build command (this might be `npm run build`, `yarn build`, or similar, depending on the project setup):
        ```bash
        # Example build command (check your package.json)
        npm run build 
@@ -53,10 +60,8 @@ You must obtain these keys from Deepgram and Google AI Studio respectively and e
    *   Open Chrome and navigate to `chrome://extensions/`.
    *   Enable "Developer mode" (usually a toggle in the top-right corner).
    *   Click "Load unpacked".
-   *   **Select the `dist` folder** (or your build output folder) that was created by the build command.
+   *   **Select the project folder** that contains the `dist` folder created by the build command.
    *   The extension icon should appear in your toolbar.
-
-**(Note for Active Development):** If you are using a development server with hot-reloading (`npm run dev`), the process might differ, potentially involving loading the root directory. Refer to your specific development server instructions. The steps above are for loading the *built* version of the extension.
 
 ## How to Use (POC Workflow)
 
